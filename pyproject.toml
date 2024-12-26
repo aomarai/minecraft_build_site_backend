@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "buildsite-backend"
+version = "0.1.0"
+description = "Backend for Minecraft build-sharing site featuring a 3D viewer and layer-by-layer steps"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^5.1.4"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
