@@ -4,6 +4,21 @@ from django.db import models
 class User(AbstractUser):
     bio = models.TextField(blank=True, null=True)
     profile_picture = models.ImageField(upload_to='avatar_images/', blank=True, null=True)
+    groups = models.ManyToManyField(
+        'auth.Group',
+        related_name='custom_user_set',
+        blank=True,
+        help_text='The groups this user belongs to.',
+        verbose_name='groups',
+    )
+    user_permissions = models.ManyToManyField(
+        'auth.Permission',
+        related_name='custom_user_permissions_set',
+        blank=True,
+        help_text='Specific permissions for this user.',
+        verbose_name='user permissions',
+    )
+
 
 class Build(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='builds')
@@ -23,7 +38,7 @@ class Comment(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    build = models.ForeignKey(Build, on_delete=models.CASCADE, related_name='comments')
+    build = models.ForeignKey(Build, on_delete=models.CASCADE, related_name='rating')
     score = models.PositiveSmallIntegerField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True) # For editing a rating later
