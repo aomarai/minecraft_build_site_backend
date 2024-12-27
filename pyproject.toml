@@ -5,12 +5,17 @@ description = "Backend for Minecraft build-sharing site featuring a 3D viewer an
 authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 package-mode = false
+packages = [
+    { include = "buildsite_backend" },
+    { include = "config" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.10"
 django = "^5.1.4"
 django-environ = "^0.11.2"
 psycopg2-binary = "^2.9.10"
+pillow = "^11.0.0"
 
 
 [build-system]
