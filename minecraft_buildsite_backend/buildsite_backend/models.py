@@ -23,8 +23,13 @@ class UserProfile(models.Model):
     profile_picture = models.ImageField(upload_to='avatar_images/', blank=True, null=True)
     bio = models.TextField(max_length=512, blank=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+        ]
+
     def __str__(self):
-        return self.display_name if self.display_name.strip() else self.user.username
+        return self.display_name if self.display_name and self.display_name.strip() else self.user.username
 
 class Build(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='builds')

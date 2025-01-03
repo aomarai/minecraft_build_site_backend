@@ -19,18 +19,13 @@ class RegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email']
         )
 
-class UserProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserProfile
-        fields = ['display_name', 'profile_picture', 'bio']
-
-class PublicUserProfileSerializer(serializers.ModelSerializer):
+class BaseUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = ['display_name', 'profile_picture', 'bio']
 
 class UserSerializer(serializers.ModelSerializer):
-    profile = UserProfileSerializer()
+    profile = BaseUserProfileSerializer()
 
     class Meta:
         model = User
