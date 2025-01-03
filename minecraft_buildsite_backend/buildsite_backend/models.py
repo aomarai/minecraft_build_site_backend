@@ -59,3 +59,32 @@ class BillOfMaterials(models.Model):
 
     def __str__(self):
         return f'{self.material.name} - {self.quantity}'
+
+class BuildLayer(models.Model):
+    build = models.ForeignKey(Build, on_delete=models.CASCADE, related_name='layers')
+    layer_number = models.PositiveIntegerField()
+    data = models.JSONField()
+
+    class Meta:
+        unique_together = ('build', 'layer_number')
+
+    def __str__(self):
+        return f'Layer {self.layer_number}'
+
+class BuildTag(models.Model):
+    name = models.CharField(max_length=32, unique=True)
+    builds = models.ManyToManyField(Build, related_name='tags')
+
+    def __str__(self):
+        return self.name
+
+class FavoriteBuild(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
+    build = models.ForeignKey(Build, on_delete=models.CASCADE, related_name='favorited_by')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'build')
+
+    def __str__(self):
+        return f'{self.user.username} - {self.build.title}'
