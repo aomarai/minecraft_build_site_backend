@@ -2,8 +2,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 class User(AbstractUser):
-    bio = models.TextField(blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='avatar_images/', blank=True, null=True)
     groups = models.ManyToManyField(
         'auth.Group',
         related_name='custom_user_set',
@@ -19,6 +17,19 @@ class User(AbstractUser):
         verbose_name='user permissions',
     )
 
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    display_name = models.CharField(max_length=32, blank=True)
+    profile_picture = models.ImageField(upload_to='avatar_images/', blank=True, null=True)
+    bio = models.TextField(max_length=512, blank=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['user']),
+        ]
+
+    def __str__(self):
+        return self.display_name if self.display_name and self.display_name.strip() else self.user.username
 
 class Build(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='builds')
