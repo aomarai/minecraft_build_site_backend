@@ -24,7 +24,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=512, blank=True)
 
     def __str__(self):
-        return self.display_name
+        return self.display_name if self.display_name.strip() else self.user.username
 
 class Build(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='builds')
